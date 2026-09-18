@@ -1,6 +1,6 @@
-# Turborepo starter
+# Retroshop
 
-This Turborepo starter is maintained by the Turborepo core team.
+DVD retail store check-out system.
 
 ## Using this example
 
