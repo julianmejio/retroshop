@@ -1,12 +1,15 @@
 export default function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-foreground">
-            Back to the Shop
-          </h1>
-          <p>Coming soon…</p>
+    <div className="h-screen flex items-center justify-center bg-background p-4 lg:p-8">
+      <div className="w-full max-w-5xl h-full flex flex-row rounded-2xl overflow-hidden shadow-lg">
+        {/* Left panel */}
+        <div className="w-1/2 flex items-center justify-center bg-pink-500 py-16 px-8">
+          <p>Offer here</p>
+        </div>
+
+        {/* Right panel */}
+        <div className="w-1/2 flex items-center justify-center bg-blue-500 py-16 px-8">
+          <p>Shopping cart here</p>
         </div>
       </div>
     </div>
