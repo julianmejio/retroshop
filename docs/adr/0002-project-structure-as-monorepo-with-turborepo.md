@@ -16,6 +16,6 @@ We will adopt a **monorepo architecture** using **Turborepo** and package manage
 
 ## Consequences
 
-* **Positive:** Easy code sharing across apps, faster local/CI builds via caching, atomic multi-project commits, and centralized tooling.
-* **Negative:** Larger repository size and increased initial setup complexity.
-* **Mitigation:** Use strict package boundary rules and contracts.
+- **Positive:** Easy code sharing across apps, faster local/CI builds via caching, atomic multi-project commits, and centralized tooling.
+- **Negative:** Larger repository size and increased initial setup complexity.
+- **Mitigation:** Use strict package boundary rules and contracts.
