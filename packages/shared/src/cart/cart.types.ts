@@ -1,7 +1,7 @@
 export interface CalculatePricePayload {
-    input: string;
+  input: string;
 }
 
 export interface CartPriceResponse {
-    total: number;
+  total: number;
 }
