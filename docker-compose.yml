@@ -22,6 +22,20 @@ services:
     networks:
       - app-network
 
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      target: runner
+      args:
+        NODE_VERSION: "24"
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
