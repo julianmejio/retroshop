@@ -5,3 +5,7 @@ export abstract class DomainException extends Error {
     Object.setPrototypeOf(this, DomainException.prototype);
   }
 }
+
+export type DomainExceptionConstructor = new (
+  ...args: unknown[]
+) => DomainException;

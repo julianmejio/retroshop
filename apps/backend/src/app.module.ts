@@ -1,9 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { DomainExceptionFilter } from './shared/exceptions/domain-exception.filter';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [],
+  imports: [CartModule],
   controllers: [],
   providers: [
     Logger,
