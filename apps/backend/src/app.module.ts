@@ -1,8 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
+import { DomainExceptionFilter } from './shared/exceptions/domain-exception.filter';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [],
+  imports: [CartModule],
   controllers: [],
-  providers: [],
+  providers: [
+    Logger,
+    {
+      provide: APP_FILTER,
+      useClass: DomainExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
