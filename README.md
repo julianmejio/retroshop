@@ -1,159 +1,113 @@
 # Retroshop
 
-DVD retail store check-out system.
+DVD retail calculator.
 
-## Using this example
+## Getting Started
 
-Run the following command:
+### Option 1: Docker Compose (recommended)
 
-```sh
-npx create-turbo@latest
+**Prerequisites:** Docker installed on your machine.
+
+1. Copy the example environment file and adjust variables if needed:
+
+```bash
+cp .env.example .env
 ```
 
-## What's inside?
+> The defaults use port `3000` for the frontend and `3001` for the backend. If those are taken, update `FRONTEND_PORT` and `BACKEND_PORT` in `.env`. If you change `BACKEND_PORT`, make sure `NEXT_PUBLIC_API_URL` in `.env` reflects the new port as well; otherwise, you could see a **Network Error** when calculating the price.
 
-This Turborepo includes the following packages/apps:
+2. Build and start all services:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+docker compose up -d --build
 ```
 
-Without global `turbo`, use your package manager:
+3. Open [http://localhost:3000](http://localhost:3000) (or the port you configured).
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm exec turbo build
-pnpm exec turbo build
+This runs the project in **production mode**.
+
+---
+
+### Option 2: Manual setup
+
+**Prerequisites:** Node 24, [pnpm](https://pnpm.io/).
+
+1. Install dependencies from the repo root:
+
+```bash
+pnpm i
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+2. Start the development servers:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
+```bash
+pnpm dev
 ```
 
-Without global `turbo`:
+This runs the project in **development mode** with hot-reload across all apps.
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+## Running Tests
+
+From the repo root (requires Node 24 + pnpm).
+
+Run `pnpm i` first if you haven't:
+
+```bash
+pnpm test
 ```
 
-### Develop
+This runs the backend unit tests and the E2E test via Turborepo.
 
-To develop all apps and packages, run the following command:
+## Repository Structure
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
 ```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
+retroshop/
+├── apps/
+│   ├── backend/           REST API (NestJS)
+│   └── web/               Frontend (Next.js)
+├── packages/
+│   ├── shared/            TypeScript contracts
+│   ├── eslint-config/     ESLint configuration
+│   └── typescript-config/ tsconfig bases
+├── docs/
+│   └── adr/               Architecture Decision Records
+├── docker-compose.yml
+└── turbo.json
 ```
+## Architecture
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+The project is a **pnpm + Turborepo monorepo** with two apps sharing one typed-contract package.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+### Backend (`apps/backend`)
 
-```sh
-turbo dev --filter=web
-```
+NestJS REST API implementing a light **Domain-Driven Design** layering for separation of concerns and easy extensibility.
 
-Without global `turbo`:
+| Module | Responsibility |
+|--------|---------------|
+| `cart` | Domain logic split into **application** (use cases), **domain** (pure logic), and **presentation** (HTTP DTOs + controllers). Exposes `POST /cart/calculate`. |
+| `shared` | `DomainException` handling and HTTP mapping for consistent REST error responses. |
 
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+**Testing:**
+- Unit tests cover pure domain logic.
+- One E2E test provides overall integration coverage.
 
-### Remote Caching
+### Frontend (`apps/web`)
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Next.js single-page app that consumes the backend `POST /cart/calculate` endpoint.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Shared contracts (`packages/shared`)
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+TypeScript types and DTOs shared between frontend and backend, keeping the API contract in one place.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Architecture Decision Records
 
-```sh
-cd my-turborepo
-turbo login
-```
+Design decisions are documented as ADRs in [`/docs/adr`](docs/adr/).
 
-Without global `turbo`, use your package manager:
+## Tech Stack
 
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+| Layer | Technology |
+|-------|-----------|
+| Monorepo tooling | Turborepo + pnpm workspaces |
+| Backend | NestJS |
+| Frontend | Next.js |
+| Containerisation | Docker Compose |

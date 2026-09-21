@@ -1,0 +1,42 @@
+services:
+  # Next.js frontend app
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: runner
+      args:
+        # TODO: Unify Node version with Dockerfiles and final stack
+        NODE_VERSION: "24"
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://backend:3001}
+    image: retroshop/web:latest
+    container_name: web
+    ports:
+      # TODO: Put port in .env for flexible installation.
+      # If you need another port, use docker-compose.override.yml for that.
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      # If you need to run dev mode, use docker-compose.override.yml for set NODE_ENV in dev mode
+      # and add `command: npm run dev --workspace=apps/web` to this service.
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      target: runner
+      args:
+        NODE_VERSION: "24"
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
