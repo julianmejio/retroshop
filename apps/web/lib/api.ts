@@ -1,9 +1,16 @@
 import { CalculatePricePayload, CartPriceResponse } from "@repo/shared/cart";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+/**
+ * Backend URL.
+ */
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
+/**
+ * API util
+ */
 export const api = {
   cart: {
+    // /cart/calculate endpoint
     calculate: async (
       input: string,
       signal: AbortSignal,

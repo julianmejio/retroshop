@@ -10,6 +10,10 @@ import { Label } from "@/components/ui/label";
 
 // Utils
 
+/**
+ * Check if the input of the shopping cart has valid content.
+ * @param text Multi-line text as input.
+ */
 function hasContent(text: string): boolean {
   return text.split("\n").some((line) => line.trim().length > 0);
 }
