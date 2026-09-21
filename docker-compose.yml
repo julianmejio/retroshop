@@ -6,13 +6,11 @@ services:
       dockerfile: apps/web/Dockerfile
       target: runner
       args:
-        # TODO: Unify Node version with Dockerfiles and final stack
         NODE_VERSION: "24"
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://backend:3001}
     image: retroshop/web:latest
     container_name: web
     ports:
-      # TODO: Put port in .env for flexible installation.
       # If you need another port, use docker-compose.override.yml for that.
       - "${FRONTEND_PORT:-3000}:3000"
     environment:

@@ -4,21 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { CartPriceResponse } from "@repo/shared/cart";
 import { api } from "@/lib/api";
 import { useDebounce } from "@/hooks/useDebounce";
-import { formatCartPrice } from "@/lib/cart";
+import { formatCartPrice, hasContent } from "@/lib/cart";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-// Utils
-
-/**
- * Check if the input of the shopping cart has valid content.
- * @param text Multi-line text as input.
- */
-function hasContent(text: string): boolean {
-  return text.split("\n").some((line) => line.trim().length > 0);
-}
-
-// Component
 
 export default function ShoppingCartCalculator() {
   const [text, setText] = useState<string>("");
