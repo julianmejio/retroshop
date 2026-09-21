@@ -1,4 +1,9 @@
+import { createRequire } from "module";
 import babelParser from "@babel/eslint-parser";
+// Resolve the preset from this package's own context so @babel/core@8 finds
+// the matching 8.x version instead of the Babel 7 copy shadcn brings in.
+const require = createRequire(import.meta.url);
+const presetTypescriptPath = require.resolve("@babel/preset-typescript");
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import turboPlugin from "eslint-plugin-turbo";
@@ -18,7 +23,7 @@ export const config = [
       parserOptions: {
         requireConfigFile: false,
         babelOptions: {
-          presets: ["@babel/preset-typescript"],
+          presets: [presetTypescriptPath],
         },
       },
     },

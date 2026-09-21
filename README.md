@@ -74,6 +74,7 @@ retroshop/
 ├── docker-compose.yml
 └── turbo.json
 ```
+
 ## Architecture
 
 The project is a **pnpm + Turborepo monorepo** with two apps sharing one typed-contract package.
@@ -82,12 +83,13 @@ The project is a **pnpm + Turborepo monorepo** with two apps sharing one typed-c
 
 NestJS REST API implementing a light **Domain-Driven Design** layering for separation of concerns and easy extensibility.
 
-| Module | Responsibility |
-|--------|---------------|
-| `cart` | Domain logic split into **application** (use cases), **domain** (pure logic), and **presentation** (HTTP DTOs + controllers). Exposes `POST /cart/calculate`. |
-| `shared` | `DomainException` handling and HTTP mapping for consistent REST error responses. |
+| Module   | Responsibility                                                                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cart`   | Domain logic split into **application** (use cases), **domain** (pure logic), and **presentation** (HTTP DTOs + controllers). Exposes `POST /cart/calculate`. |
+| `shared` | `DomainException` handling and HTTP mapping for consistent REST error responses.                                                                              |
 
 **Testing:**
+
 - Unit tests cover pure domain logic.
 - One E2E test provides overall integration coverage.
 
@@ -105,9 +107,9 @@ Design decisions are documented as ADRs in [`/docs/adr`](docs/adr/).
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
+| Layer            | Technology                  |
+| ---------------- | --------------------------- |
 | Monorepo tooling | Turborepo + pnpm workspaces |
-| Backend | NestJS |
-| Frontend | Next.js |
-| Containerisation | Docker Compose |
+| Backend          | NestJS                      |
+| Frontend         | Next.js                     |
+| Containerisation | Docker Compose              |
