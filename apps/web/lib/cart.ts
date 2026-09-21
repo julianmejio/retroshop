@@ -11,7 +11,7 @@ export function hasContent(text: string): boolean {
 }
 
 /**
- * Formats the cart price response with the local specified.
+ * Formats the cart price response with the locale specified.
  *
  * This replaces \u202F characters with \u0020 as thousands separator in French locales due to
  * inconsistency in some web fonts.
