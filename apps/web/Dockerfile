@@ -1,5 +1,5 @@
 ARG NODE_VERSION=24
-ARG PNPM_VEERSION=12.4.2
+ARG PNPM_VERSION=12.4.2
 
 FROM node:${NODE_VERSION}-alpine AS pruner
 WORKDIR /app
@@ -18,13 +18,15 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm install --frozen-lockfile
 
 FROM node:${NODE_VERSION}-alpine AS builder
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3001}
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 
 COPY --from=installer /app/node_modules ./node_modules
 COPY --from=pruner /app/out/full/ .
 
-RUN pnpm turbo run build --filter=web
+RUN pnpm dlx turbo run build --filter=web...
 
 # Production
 FROM node:${NODE_VERSION}-alpine AS runner
