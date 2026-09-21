@@ -3,6 +3,14 @@ import { CartPriceResponse } from "@repo/shared/cart";
 const DEFAULT_LOCALE = "fr-FR";
 
 /**
+ * Check if the input of the shopping cart has valid content.
+ * @param text Multi-line text as input.
+ */
+export function hasContent(text: string): boolean {
+  return text.split("\n").some((line) => line.trim().length > 0);
+}
+
+/**
  * Formats the cart price response with the local specified.
  *
  * This replaces \u202F characters with \u0020 as thousands separator in French locales due to

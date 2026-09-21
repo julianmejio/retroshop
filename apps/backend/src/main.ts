@@ -4,7 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // TEMPORARY: Using wildcard CORS to ease initial deployment setup.
+  // Restrict to specific origin(s) once the deployment environment is set.
   app.enableCors({ origin: '*' });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
