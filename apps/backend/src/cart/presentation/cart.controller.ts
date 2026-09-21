@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { CalculateCartPriceUseCase } from '../application/use-cases/calculate-cart-price.use-case';
 import { CalculateCartPriceRequestDto } from './calculate-cart-price.request.dto';
 import { CalculateCartPriceResponseDto } from './calculate-cart-price.response.dto';
@@ -10,6 +10,7 @@ export class CartController {
   ) {}
 
   @Post('/calculate')
+  @HttpCode(HttpStatus.OK)
   public calculate(
     @Body() body: CalculateCartPriceRequestDto,
   ): CalculateCartPriceResponseDto {
